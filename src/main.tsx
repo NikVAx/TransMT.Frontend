@@ -8,7 +8,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider
       theme={defaultTheme}
-      colorScheme="light"
+      colorScheme="dark"
       UNSAFE_className="wrapper"
     >
       <App />

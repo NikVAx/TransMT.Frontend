@@ -1,18 +1,18 @@
 import { Grid } from "@adobe/react-spectrum";
 import { PropsWithChildren, useMemo } from "react";
-import { SidePageContext } from "./sidePage/sidePage.context";
-import { SidePageProvider } from "./sidePage/sidePage.provider";
+import { MainLayoutContext } from "./context/mainLayout.context";
+import { MainLayoutProvider } from "./context/mainLayout.provider";
 import { Sidebar } from "./sidebar";
 import { Header } from "./header";
 
-export const Layout = ({ children }: PropsWithChildren) => {
+export const MainLayout = ({ children }: PropsWithChildren) => {
   const memoChildren = useMemo(() => {
     return children;
   }, [children]);
 
   return (
-    <SidePageProvider>
-      <SidePageContext.Consumer>
+    <MainLayoutProvider>
+      <MainLayoutContext.Consumer>
         {({ isOpen }) => (
           <Grid
             areas={["header  header", "sidebar content"]}
@@ -25,7 +25,7 @@ export const Layout = ({ children }: PropsWithChildren) => {
             {memoChildren}
           </Grid>
         )}
-      </SidePageContext.Consumer>
-    </SidePageProvider>
+      </MainLayoutContext.Consumer>
+    </MainLayoutProvider>
   );
 };

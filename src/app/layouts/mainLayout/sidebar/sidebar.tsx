@@ -1,11 +1,11 @@
 import { memo } from "react";
 import { View } from "@adobe/react-spectrum";
-import { useSidePage } from "../sidePage/sidePage.hooks";
+import { useMainLayout } from "../context/mainLayout.hooks";
 import { SidePanelTree } from "./components";
 import { SidePanelProvider } from "./context/sidebar.provider";
 
 export const Sidebar = memo(() => {
-  const { isOpen } = useSidePage();
+  const { isOpen } = useMainLayout();
 
   return (
     <View
