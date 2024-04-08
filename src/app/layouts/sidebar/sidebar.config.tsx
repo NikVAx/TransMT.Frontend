@@ -1,36 +1,37 @@
+import { ITreeNode, TreeNode } from "@/shared";
 import { IMenuItem } from "./sidebar.types";
 
-function createMenuItem(
-  title: string,
-  link: string,
-  items: null | IMenuItem[] = null
-) {
-  return {
-    text: title,
-    link: link,
-    items: items,
-  };
-}
+// function TreeNode(
+//   title: string,
+//   link: string,
+//   items: null | ITreeNode<IMenuItem>[] = null
+// ) {
+//   return {
+//     text: title,
+//     link: link,
+//     items: items,
+//   };
+// }
 
-export const config: IMenuItem[] = [
-  createMenuItem("Геозоны", "#geozones", [
-    createMenuItem("Создать", "geozones/create"),
-    createMenuItem("Карта геозон", "geozones"),
+export const sidebarConfig: ITreeNode<IMenuItem>[] = [
+  TreeNode({ text: "Геозоны", link: "/" }, [
+    TreeNode({ text: "Создать", link: "/geozones/create" }),
+    TreeNode({ text: "Карта геозон", link: "/geozones/map" }),
   ]),
-  createMenuItem("Операторы", "#operators", [
-    createMenuItem("Создать", "operators/create"),
-    createMenuItem("Все операторы", "operators"),
+  TreeNode({ text: "Операторы", link: "/" }, [
+    TreeNode({ text: "Создать", link: "/operators/create" }),
+    TreeNode({ text: "Все операторы", link: "/operators/list" }),
   ]),
-  createMenuItem("Здания", "#buildings", [
-    createMenuItem("Создать", "buildings/create"),
-    createMenuItem("Список зданий", "buildings"),
+  TreeNode({ text: "Здания", link: "/" }, [
+    TreeNode({ text: "Создать", link: "/buildings/create" }),
+    TreeNode({ text: "Список зданий", link: "/buildings/list" }),
   ]),
-  createMenuItem("Транспорт", "#vehicles", [
-    createMenuItem("Создать", "vehicles/create"),
-    createMenuItem("Список ТС", "vehicles"),
+  TreeNode({ text: "Транспорт", link: "/" }, [
+    TreeNode({ text: "Создать", link: "/vehicles/create" }),
+    TreeNode({ text: "Список ТС", link: "/vehicles/list" }),
   ]),
-  createMenuItem("Учетные записи", "#users", [
-    createMenuItem("Пользователи", "users"),
-    createMenuItem("Роли", "roles"),
+  TreeNode({ text: "Учётные записи", link: "/" }, [
+    TreeNode({ text: "Пользователи", link: "/users/list" }),
+    TreeNode({ text: "Роли", link: "/users/roles" }),
   ]),
 ];

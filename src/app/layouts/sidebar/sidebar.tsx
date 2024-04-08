@@ -1,6 +1,8 @@
 import { memo } from "react";
 import { View } from "@adobe/react-spectrum";
 import { useSidePage } from "../sidePage/sidePage.hooks";
+import { SidePanelTree } from "./components";
+import { SidePanelProvider } from "./context/sidebar.provider";
 
 export const Sidebar = memo(() => {
   const { isOpen } = useSidePage();
@@ -12,6 +14,10 @@ export const Sidebar = memo(() => {
       overflow={isOpen ? "auto" : "hidden"}
       height="100%"
       width="100%"
-    ></View>
+    >
+      <SidePanelProvider>
+        <SidePanelTree />
+      </SidePanelProvider>
+    </View>
   );
 });
