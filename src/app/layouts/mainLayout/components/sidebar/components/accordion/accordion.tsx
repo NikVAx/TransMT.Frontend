@@ -34,13 +34,17 @@ export function SidePanelAccordion({
               node.value.link === "/",
           })}
         >
-          <p>{node.value.text}</p>
+          <p className={s.accordionText}>{node.value.text}</p>
           {/* <Box className={clsx(s.icon, { [s.isActiveIcon]: node._state.isOpen })}>
        <Icon name="arrow" />
      </Box> */}
         </div>
 
-        {node._state.isOpen && <Flex direction="column"><div className={s.accordionChildren}>{children}</div></Flex>}
+        {node._state.isOpen && (
+          <Flex direction="column">
+            <div className={s.accordionChildren}>{children}</div>
+          </Flex>
+        )}
       </Flex>
     </div>
   );

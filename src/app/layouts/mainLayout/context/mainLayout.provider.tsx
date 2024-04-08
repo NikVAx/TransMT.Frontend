@@ -2,10 +2,10 @@ import { PropsWithChildren, useState } from "react";
 import { MainLayoutContext } from "./mainLayout.context";
 
 export const MainLayoutProvider = ({ children }: PropsWithChildren<any>) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   return (
-    <MainLayoutContext.Provider value={{ isOpen, setIsOpen }}>
+    <MainLayoutContext.Provider value={{ isSidebarOpen, setIsSidebarOpen }}>
       {children}
     </MainLayoutContext.Provider>
   );
