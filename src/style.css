@@ -1,0 +1,11 @@
+#id {
+  min-height: 100dvh;
+}
+* {
+  text-align: justify;
+  box-sizing: border-box;
+}
+
+.wrapper {
+  height: 100%;
+}
