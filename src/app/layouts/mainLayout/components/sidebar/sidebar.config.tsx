@@ -1,19 +1,21 @@
 import { ITreeNode, TreeNode } from "@/shared";
 import { IMenuItem } from "./sidebar.types";
 
-// function TreeNode(
-//   title: string,
-//   link: string,
-//   items: null | ITreeNode<IMenuItem>[] = null
-// ) {
-//   return {
-//     text: title,
-//     link: link,
-//     items: items,
-//   };
-// }
-
 export const sidebarConfig: ITreeNode<IMenuItem>[] = [
+  TreeNode({ text: "Справочники", link: "/" }, [
+    TreeNode({ text: "Геозоны", link: "/geozones" }),
+    TreeNode({ text: "Транспортные средства", link: "/vehicles" }),
+    TreeNode({ text: "Операторы ТС", link: "/operators" }),
+    TreeNode({ text: "Здания и сооружения", link: "/buildings" }),
+  ]),
+  TreeNode({ text: "Мониторинг", link: "/" }, [
+    TreeNode({ text: "Карта", link: "/monitoring/map" }),
+    TreeNode({ text: "Статусы движения", link: "/monitoring/status" }),
+    TreeNode({ text: "Активность операторов", link: "/monitoring/operators" }),
+  ]),
+  TreeNode({ text: "Отчеты", link: "/" }, [
+    TreeNode({ text: "Отчет об активности ТС", link: "/reports/activity" }),
+  ]),
   TreeNode({ text: "Геозоны", link: "/" }, [
     TreeNode({ text: "Создать", link: "/geozones/create" }),
     TreeNode({ text: "Карта геозон", link: "/geozones/map" }),
