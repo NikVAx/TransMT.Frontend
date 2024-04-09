@@ -1,12 +1,12 @@
 import { Button } from "@adobe/react-spectrum";
-import { useSidePage } from "../sidePage/sidePage.hooks";
+import { useMainLayout } from "../../context/mainLayout.hooks";
 import ShowMenu from "@spectrum-icons/workflow/ShowMenu";
 
 export const TriggerMenuButton = () => {
-  const { setIsOpen } = useSidePage();
+  const { setIsSidebarOpen } = useMainLayout();
 
   const handleClick = () => {
-    setIsOpen((prev) => !prev);
+    setIsSidebarOpen((prev) => !prev);
   };
 
   return (

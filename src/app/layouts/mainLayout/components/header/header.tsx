@@ -1,6 +1,7 @@
 import { Flex, View } from "@adobe/react-spectrum";
 import { memo } from "react";
 import { TriggerMenuButton } from "../triggerMenuButton";
+import { ProfileMenu } from "../profileMenu/profileMenu";
 
 export const Header = memo(() => {
   return (
@@ -20,6 +21,9 @@ export const Header = memo(() => {
       >
         <Flex>
           <TriggerMenuButton />
+        </Flex>
+        <Flex>
+          <ProfileMenu/>
         </Flex>
       </Flex>
     </View>

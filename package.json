@@ -15,6 +15,7 @@
     "@ag-grid-community/styles": "^31.2.0",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
+    "@react-aria/optimize-locales-plugin": "^1.0.2",
     "@react-spectrum/color": "^3.0.0-beta.32",
     "@react-stately/color": "^3.5.3",
     "@spectrum-icons/workflow": "^4.2.10",

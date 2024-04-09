@@ -1,0 +1,29 @@
+/* .button {
+  padding: var(--spectrum-global-dimension-size-85) var(--spectrum-global-dimension-size-160);
+  margin-left: 10px;
+} */
+.button {
+  padding-top: var(--spectrum-global-dimension-size-85);
+  padding-bottom: var(--spectrum-global-dimension-size-85);
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.button:hover {
+  background-color: var(--spectrum-gray-200);
+}
+
+.button span {
+  padding-left: var(--spectrum-global-dimension-size-160);
+}
+
+.buttonContainer span {
+  padding-left: var(--spectrum-global-dimension-size-160);
+}
+
+.buttonActive {
+  background: var(--spectrum-black);
+  color: var(---specturm-white);
+  width: 100%;
+}
