@@ -16,7 +16,7 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
         {({ isSidebarOpen }) => (
           <Grid
             areas={["header  header", "sidebar content"]}
-            columns={[isSidebarOpen ? "260px" : "0px", "3fr"]}
+            columns={[isSidebarOpen ? "220px" : "0px", "3fr"]}
             rows={["60px", "auto"]}
             height="100dvh"
           >
