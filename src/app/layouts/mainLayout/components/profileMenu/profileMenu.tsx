@@ -19,7 +19,7 @@ export const ProfileMenu = () => {
   };
 
   return (
-    <MenuTrigger>
+    <MenuTrigger align="end">
       <Button variant="secondary" style="fill">
         <Text>Василенко Н.А.</Text>
         <Avatar src="https://i.imgur.com/kJOwAdv.png" marginEnd="10px" />
