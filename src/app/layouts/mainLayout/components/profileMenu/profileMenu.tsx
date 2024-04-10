@@ -9,6 +9,7 @@ import {
   Key,
 } from "@adobe/react-spectrum";
 import { observer } from "mobx-react-lite";
+import { useNavigate } from "react-router-dom";
 
 export const MENU_ACTIONS = {
   PROFILE: "profile",
@@ -16,13 +17,14 @@ export const MENU_ACTIONS = {
 };
 
 export const ProfileMenu = observer(() => {
+  const navigate = useNavigate();
+
   const action = (key: Key) => {
     console.log("action", key);
 
-    if (key == MENU_ACTIONS.PROFILE) {
-      authStore.signIn({ username: "admin", password: "admin" });
-    } else if (key == MENU_ACTIONS.LOGOUT) {
+    if (key == MENU_ACTIONS.LOGOUT) {
       authStore.signOut();
+      navigate("/login");
     }
   };
 
