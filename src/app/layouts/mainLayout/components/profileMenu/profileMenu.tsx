@@ -1,4 +1,4 @@
-import { authStore } from "@/features/auth";
+import { useStore } from "@/app/rootStore";
 import {
   Avatar,
   Item,
@@ -17,14 +17,17 @@ export const MENU_ACTIONS = {
 };
 
 export const ProfileMenu = observer(() => {
+  const authStore = useStore((store) => store.authStore);
   const navigate = useNavigate();
 
   const action = (key: Key) => {
     console.log("action", key);
 
     if (key == MENU_ACTIONS.LOGOUT) {
-      authStore.signOut();
+      authStore.logout();
       navigate("/login");
+    } else if (key == MENU_ACTIONS.PROFILE) {
+      navigate("/account/profile");
     }
   };
 

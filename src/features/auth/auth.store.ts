@@ -1,77 +1,117 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import {
-  clearLocalAuthData,
-  getLocalAuthData,
-  setLocalAuthData,
-  signInByPassword,
-} from "./auth.services";
+import { signInByPassword } from "./auth.services";
 import { IAuthData, ISignInOptions } from "./auth.types";
+import { RootStore } from "@/app/rootStore/rootStore";
 
-class AuthStore {
-  private _isAuth: boolean;
-  private _authData: IAuthData;
+enum STORAGE_KEYS {
+  ACCESS_TOKEN = "accessToken",
+  USER = "user",
+}
 
-  isLoading: boolean;
+export class AuthStore {
+  public isLoading: boolean;
+  private _data: IAuthData;
+  private _permissions: string[];
 
-  constructor() {
+  constructor(public rootStore: RootStore) {
     makeAutoObservable(this);
-
-    this._authData = {
+    this._data = {
       user: null,
       accessToken: null,
     };
-
-    this._isAuth = false;
+    this._permissions = [];
     this.isLoading = true;
+    this.loadCachedData();
   }
 
   public isAuthenticated() {
-    if (!this._authData.user) {
-      this._isAuth = false;
-    }
-
-    return this._isAuth;
+    return this._data.user != null;
   }
 
-  public getUser() {
-    if (!this._authData.user) {
-      throw new Error("Check the user is authenticated before get user");
-    }
-
-    return this._authData.user;
+  public hasPermission(name: string) {
+    this._permissions.some((permission) => permission === name);
   }
 
-  public async signIn(data: ISignInOptions) {
+  public loadCachedData() {
+    const data = this.readAuthDataFromLocalStorage();
+    if (data !== null) {
+      this._data = data;
+      this._permissions = this.mapFlatDistinctUserPermissions();
+      this.isLoading = false;
+      return true;
+    }
+    return false;
+  }
+
+  public async login(data: ISignInOptions) {
+    this.isLoading = true;
     const [status, response] = await signInByPassword(data);
-
     if (status) {
       runInAction(() => {
-        console.log("Success", response.data);
-        this._authData = response.data;
-        this._isAuth = true;
-        setLocalAuthData(response.data);
+        this._data = response.data;
+        this.permissions = this.mapFlatDistinctUserPermissions();
+        this.saveAuthDataToLocalStorage();
       });
     } else {
-      this._isAuth = false;
+      runInAction(() => {
+        this._data.user = null;
+      });
     }
 
     this.isLoading = false;
   }
 
-  public signOut() {
-    clearLocalAuthData();
-    this._isAuth = false;
-    this._authData.accessToken = null;
-    this._authData.user = null;
+  public get permissions() {
+    return this._permissions;
   }
 
-  public loadCachedData() {
-    const data = getLocalAuthData();
-    if (data !== null) {
-      this._isAuth = true;
-      this._authData = data;
+  private set permissions(thisPermissions: string[]) {
+    this._permissions = thisPermissions;
+  }
+
+  public getUser() {
+    if (!this._data.user) {
+      throw new Error("Check the user is authenticated before get user");
+    }
+
+    return this._data.user;
+  }
+
+  public logout() {
+    this.clearAuthDataFromLocalStorage();
+  }
+
+  private mapFlatDistinctUserPermissions() {
+    return [
+      ...new Set(
+        this._data.user?.roles.flatMap((value) => value.permissions) as string[]
+      ),
+    ];
+  }
+
+  private readAuthDataFromLocalStorage() {
+    const accessTokenString = localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
+    const userString = localStorage.getItem(STORAGE_KEYS.USER);
+    if (accessTokenString && userString) {
+      return {
+        accessToken: accessTokenString,
+        user: JSON.parse(userString),
+      } as IAuthData;
+    }
+    return null;
+  }
+
+  private saveAuthDataToLocalStorage() {
+    if (this._data.accessToken && this._data.user) {
+      localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, this._data.accessToken);
+      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(this._data.user));
     }
   }
-}
 
-export const authStore = new AuthStore();
+  private clearAuthDataFromLocalStorage() {
+    localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+    localStorage.removeItem(STORAGE_KEYS.USER);
+    this._data.accessToken = null;
+    this._data.user = null;
+  }
+}

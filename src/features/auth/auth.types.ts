@@ -14,6 +14,7 @@ export interface IUser {
 export interface IRole {
   id: string;
   name: string;
+  permissions: string[]
 }
 
 export interface IUserWithRoles extends IUser {

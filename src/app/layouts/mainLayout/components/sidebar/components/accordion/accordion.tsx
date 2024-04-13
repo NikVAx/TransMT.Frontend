@@ -18,7 +18,7 @@ export function SidePanelAccordion({
     node._update({
       isOpen: !node._state.isOpen,
     });
-    if (node.value.link !== "/") navigate(node.value.link);
+    if (!node.value.link.startsWith("#")) navigate(node.value.link);
   };
 
   useEffect(() => node._observer.subscribe(update), [node._observer]);

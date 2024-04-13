@@ -1,14 +1,25 @@
 import { LoginLayout } from "@/app/layouts";
-import { authStore } from "@/features/auth";
+import { useStore } from "@/app/rootStore";
 import { BaseButton } from "@/shared/components";
 import { Form, TextField, View } from "@adobe/react-spectrum";
-import { useState } from "react";
+import { observer } from "mobx-react-lite";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export const LoginPage = () => {
+export const LoginPage = observer(() => {
+  const authStore = useStore(store => store.authStore)
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
   });
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (authStore.isAuthenticated()) {
+      navigate("/");
+    }
+  }, [authStore.isAuthenticated()]);
 
   return (
     <LoginLayout>
@@ -34,7 +45,7 @@ export const LoginPage = () => {
         <BaseButton
           variant="accent"
           onPress={() => {
-            authStore.signIn(credentials);
+            authStore.login(credentials);
           }}
         >
           Войти
@@ -42,4 +53,4 @@ export const LoginPage = () => {
       </Form>
     </LoginLayout>
   );
-};
+});
