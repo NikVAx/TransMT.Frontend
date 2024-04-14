@@ -11,6 +11,7 @@ export const Header = memo(() => {
       backgroundColor="gray-200"
       gridArea="header"
       height="100%"
+      width="100%"
       paddingX="10px"
     >
       <Flex
@@ -18,8 +19,9 @@ export const Header = memo(() => {
         alignItems="center"
         justifyContent="space-between"
         height="100%"
+        width="100%"
       >
-        <Flex>
+        <Flex >
           <TriggerMenuButton />
         </Flex>
         <Flex>

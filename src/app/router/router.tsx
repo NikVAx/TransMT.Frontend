@@ -3,7 +3,6 @@ import { MainLayout } from "../layouts/mainLayout";
 import { View } from "@adobe/react-spectrum";
 import { LoginPage, ProfilePage } from "@/pages";
 import { AuthGuard } from "@/shared/components/authGuard/authGuard";
-import { AppOutletContainer } from "@/shared/components/appOutletContainer";
 
 export const router = createBrowserRouter([
   {
@@ -17,7 +16,15 @@ export const router = createBrowserRouter([
     ),
   },
   {
-    element: (<AppOutletContainer/>),
+    element: (
+      <MainLayout>
+        <View backgroundColor="gray-50" width="100%">
+          <AuthGuard>
+            <Outlet/>
+          </AuthGuard>
+        </View>
+      </MainLayout>
+    ),
     children: [{ path: "/account/profile", element: <ProfilePage /> }],
   },
   {
