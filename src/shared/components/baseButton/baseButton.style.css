@@ -1,3 +1,14 @@
 .base-button {
-    border-radius: 4px;
-  }
+  border-radius: 4px;
+}
+
+.Dniwja_spectrum-FocusRing-ring {
+  --spectrum-focus-ring-border-radius: 4px;
+  --spectrum-focus-ring-gap: var(--spectrum-alias-input-focusring-gap);
+  --spectrum-focus-ring-size: 2px;
+  --spectrum-focus-ring-border-size: 2px;
+  --spectrum-focus-ring-color: var(
+    --spectrum-high-contrast-focus-ring-color,
+    var(--spectrum-alias-focus-ring-color, var(--spectrum-alias-focus-color))
+  );
+}

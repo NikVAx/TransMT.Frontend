@@ -1,10 +1,10 @@
 import { useStore } from "@/app/rootStore";
+import { BaseButton } from "@/shared/components";
 import {
   Avatar,
   Item,
   Menu,
   MenuTrigger,
-  Button,
   Text,
   Key,
 } from "@adobe/react-spectrum";
@@ -33,7 +33,7 @@ export const ProfileMenu = observer(() => {
 
   return (
     <MenuTrigger align="end">
-      <Button variant="secondary" style="fill">
+      <BaseButton variant="secondary" style="fill">
         <Text>
           {" "}
           {authStore.isAuthenticated()
@@ -41,7 +41,7 @@ export const ProfileMenu = observer(() => {
             : "NOT_AUTHORIZED"}{" "}
         </Text>
         <Avatar src="https://i.imgur.com/kJOwAdv.png" marginEnd="10px" />
-      </Button>
+      </BaseButton>
 
       <Menu onAction={action}>
         <Item key={MENU_ACTIONS.PROFILE}>Профиль</Item>

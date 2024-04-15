@@ -12,5 +12,5 @@ export const BaseButton = <T extends ElementType = typeof Button>({
 }: IAs<T> & ComponentPropsWithoutRef<T>) => {
   const computedClassName = `${UNSAFE_className || className || ""} base-button`;
   const Component = as || Button;
-  return <Component {...props} UNSAFE_className={computedClassName} />;
+  return <Component  {...props} UNSAFE_className={computedClassName}/>;
 };

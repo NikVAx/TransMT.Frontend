@@ -1,6 +1,6 @@
-import { Button } from "@adobe/react-spectrum";
 import { useMainLayout } from "../../context/mainLayout.hooks";
 import ShowMenu from "@spectrum-icons/workflow/ShowMenu";
+import { BaseButton } from "@/shared/components";
 
 export const TriggerMenuButton = () => {
   const { setIsSidebarOpen } = useMainLayout();
@@ -10,8 +10,8 @@ export const TriggerMenuButton = () => {
   };
 
   return (
-    <Button onPress={handleClick} variant="secondary" style="fill">
+    <BaseButton onPress={handleClick} variant="secondary" style="fill">
       <ShowMenu />
-    </Button>
+    </BaseButton>
   );
 };

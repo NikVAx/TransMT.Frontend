@@ -1,24 +1,38 @@
-import { makeAutoObservable, runInAction } from "mobx";
-import { IBuilding } from "./building.types";
-import { getBuildings } from "./building.service";
-import { IPageRequestOptions } from "@/shared";
+import { makeAutoObservable } from "mobx";
+import { IBuilding, ICreateBuildingDto } from "./building.types";
+import {
+  createBuilding,
+  deleteBuildings,
+  getBuildings,
+} from "./building.service";
+import {
+  IManyDeleteOptions,
+  IManyDeleteRequestOptions,
+  IPageRequestOptions,
+  toArray,
+} from "@/shared";
 import { RootStore } from "@/app/rootStore";
 
 export class BuildingStore {
   constructor(public rootStore: RootStore) {
     makeAutoObservable(this);
 
-    this.buildings = [];
+    this._buildings = [];
     this._pageOptions = {
       pageIndex: 0,
       pageSize: 12,
     } as IPageRequestOptions;
-    this.isLoading = true;
   }
 
-  public buildings: IBuilding[];
+  private _buildings: IBuilding[];
 
-  public isLoading: boolean;
+  public get buildings() {
+    return this._buildings;
+  }
+
+  public set buildings(buildings: IBuilding[]) {
+    this._buildings = buildings;
+  }
 
   private _pageOptions: IPageRequestOptions;
 
@@ -31,24 +45,46 @@ export class BuildingStore {
     this.loadPage();
   }
 
-  public setPageOptions(pageIndex: number, pageSize: number) {
-    this.pageOptions.pageIndex = pageIndex;
-    this.pageOptions.pageSize = pageSize;
+  public async deleteBuildings(
+    options: IManyDeleteOptions,
+    loadPage: boolean = true
+  ) {
+    const mappedOptions: IManyDeleteRequestOptions = {
+      ...options,
+      keys: toArray(options.keys),
+    };
+
+    console.log("mappedOptions", mappedOptions);
+
+    const [status, response] = await deleteBuildings(mappedOptions);
+
+    if (status) {
+      if (loadPage) this.loadPage();
+    } else {
+      console.log("can't delete building(s) for some reason", response);
+    }
+  }
+
+  public async createBuilding(
+    options: ICreateBuildingDto,
+    loadPage: boolean = true
+  ) {
+    const [status, response] = await createBuilding(options);
+
+    if (status) {
+      if (loadPage) this.loadPage();
+    } else {
+      console.log("can't create building for some reason", response);
+    }
   }
 
   public async loadPage() {
-    runInAction(() => {
-      this.isLoading = true;
-    });
-    
     const [status, response] = await getBuildings(this.pageOptions);
 
-    runInAction(async () => {
-      if (status) {
-        this.buildings = response.data.items;
-      }
-      this.isLoading = false;
-    });
-    
+    if (status) {
+      this.buildings = response.data.items;
+    } else {
+      console.log("buildings fetch is failed");
+    }
   }
 }

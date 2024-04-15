@@ -1,8 +1,9 @@
-import { Outlet, createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import { MainLayout } from "../layouts/mainLayout";
 import { View } from "@adobe/react-spectrum";
 import { LoginPage, ProfilePage } from "@/pages";
 import { AuthGuard } from "@/shared/components/authGuard/authGuard";
+import { AppOutletContainer } from "@/shared/components/appOutletContainer";
 
 export const router = createBrowserRouter([
   {
@@ -16,15 +17,7 @@ export const router = createBrowserRouter([
     ),
   },
   {
-    element: (
-      <MainLayout>
-        <View backgroundColor="gray-50" width="100%">
-          <AuthGuard>
-            <Outlet/>
-          </AuthGuard>
-        </View>
-      </MainLayout>
-    ),
+    element: <AppOutletContainer />,
     children: [{ path: "/account/profile", element: <ProfilePage /> }],
   },
   {

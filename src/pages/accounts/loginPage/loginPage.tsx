@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const LoginPage = observer(() => {
-  const authStore = useStore(store => store.authStore)
+  const authStore = useStore((store) => store.authStore);
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
@@ -38,10 +38,11 @@ export const LoginPage = observer(() => {
         />
         <TextField
           label="Пароль"
+          type="password"
           onChange={(value) =>
             setCredentials((prev) => ({ ...prev, password: value }))
           }
-        ></TextField>
+        />
         <BaseButton
           variant="accent"
           onPress={() => {

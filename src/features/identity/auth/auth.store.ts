@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { signInByPassword } from "./auth.services";
+import { signInByPassword } from "./auth.service";
 import { IAuthData, ISignInOptions } from "./auth.types";
 import { RootStore } from "@/app/rootStore/rootStore";
 
@@ -28,8 +28,8 @@ export class AuthStore {
     return this._data.user != null;
   }
 
-  public hasPermission(name: string) {
-    this._permissions.some((permission) => permission === name);
+  public hasPermission(permission: string) {
+    return this._permissions.some((perm) => perm === permission);
   }
 
   public loadCachedData() {
