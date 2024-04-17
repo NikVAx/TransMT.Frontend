@@ -1,9 +1,6 @@
 import { PERMISSIONS } from "@/app/constants";
 import { useStore } from "@/app/rootStore";
-import { BaseButton } from "@/shared";
-import { ActionGuard } from "@/shared/components/actionGuard";
-import { DataGrid } from "@/shared/components/dataGrid/dataGrid";
-import { PageWrapper } from "@/shared/components/pageWrapper/pageWrapper";
+import { ActionGuard, BaseButton, DataGrid, PageWrapper } from "@/shared";
 import {
   Flex,
   Item,
@@ -60,46 +57,71 @@ export const ProfilePage = observer(() => {
     permissionStore.fetchPermissions();
   }, []);
 
+  const buildingCols = [
+    { field: "id" },
+    { field: "name" },
+    {
+      field: "actions",
+      cellRenderer: (props: any) => {
+        return (
+          <ActionGuard permissions={[PERMISSIONS.CAN_DELETE_BUILDINGS]}>
+            <BaseButton
+              variant="negative"
+              onPress={() => {
+                buildingStore.deleteBuildings({
+                  keys: props.data.id,
+                });
+              }}
+            >
+              X
+            </BaseButton>
+          </ActionGuard>
+        );
+      },
+    },
+  ];
+
   return (
     <PageWrapper>
-      <Flex direction="column" gap="8px" width="100%" height="100%">
+      <Flex direction="column" gap="8px" width="100%" height="95%">
         <Text>USERNAME: {authStore.getUser().username}</Text>
         <Text>EMAIL: {authStore.getUser().email}</Text>
-        {true ? null : (
-          <>
-            <Text>ROLES</Text>
-            <ListView aria-label="roles">
-              {authStore.getUser().roles.map((value) => {
-                return <Item key={`${value.id}`}>{value.name}</Item>;
-              })}
-            </ListView>
-            <Text>PERMISSIONS</Text>
-            <ListView aria-label="permissions">
-              {authStore.permissions.map((value) => {
-                return <Item key={`${value}`}>{value}</Item>;
-              })}
-            </ListView>
-          </>
-        )}
-        <NumberField
-          minValue={0}
-          onChange={(value) =>
-            setPageOptions({ pageIndex: value, pageSize: pageOptions.pageSize })
-          }
-          value={pageOptions.pageIndex}
-          label="PageIndex"
-        />
-        <NumberField
-          minValue={1}
-          onChange={(value) =>
-            setPageOptions({
-              pageIndex: pageOptions.pageIndex,
-              pageSize: value,
-            })
-          }
-          value={pageOptions.pageSize}
-          label="PageSize"
-        />
+        <Flex direction="row" width="99%" height="20%">
+          <ListView aria-label="roles" flexBasis="50%">
+            {authStore.getUser().roles.map((value) => {
+              return <Item key={`${value.id}`}>{value.name}</Item>;
+            })}
+          </ListView>
+          <ListView aria-label="permissions" flexBasis="50%">
+            {authStore.permissions.map((value) => {
+              return <Item key={`${value}`}>{value}</Item>;
+            })}
+          </ListView>
+        </Flex>
+        <Flex direction="row" gap="8px">
+          <NumberField
+            minValue={0}
+            onChange={(value) =>
+              setPageOptions({
+                pageIndex: value,
+                pageSize: pageOptions.pageSize,
+              })
+            }
+            value={pageOptions.pageIndex}
+            label="PageIndex"
+          />
+          <NumberField
+            minValue={1}
+            onChange={(value) =>
+              setPageOptions({
+                pageIndex: pageOptions.pageIndex,
+                pageSize: value,
+              })
+            }
+            value={pageOptions.pageSize}
+            label="PageSize"
+          />
+        </Flex>
 
         <Form>
           <ActionGuard
@@ -170,27 +192,7 @@ export const ProfilePage = observer(() => {
             >
               <DataGrid
                 rowData={buildingStore.buildings}
-                columnDefs={[
-                  { field: "id" },
-                  { field: "name" },
-                  {
-                    field: "actions",
-                    cellRenderer: (props: any) => {
-                      return (
-                        <BaseButton
-                          variant="negative"
-                          onPress={() => {
-                            buildingStore.deleteBuildings({
-                              keys: props.data.id,
-                            });
-                          }}
-                        >
-                          X
-                        </BaseButton>
-                      );
-                    },
-                  },
-                ]}
+                columnDefs={buildingCols}
               />
             </Item>
             <Item

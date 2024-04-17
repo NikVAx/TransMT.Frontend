@@ -1,10 +1,9 @@
 import { useStore } from "@/app/rootStore";
 import { IActionGuard } from "./actionGuard.types";
+import { observer } from "mobx-react-lite";
 
-export const ActionGuard = ({ permissions, children }: IActionGuard) => {
+export const ActionGuard = observer(({ permissions, children }: IActionGuard) => {
   const authStore = useStore((store) => store.authStore);
 
-  const predicate = (permission: string) => authStore.hasPermission(permission);
-
-  return permissions.every(predicate) ? children : null;
-};
+  return authStore.hasEveryPermission(permissions) ? children : null;
+});

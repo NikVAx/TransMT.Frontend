@@ -1,6 +1,6 @@
 import { IPageRequestOptions } from "@/shared";
 import { IGeoZone } from "./geoZone.types";
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable } from "mobx";
 import { getGeoZones } from "./geoZone.service";
 import { RootStore } from "@/app/rootStore";
 
@@ -8,17 +8,21 @@ export class GeoZoneStore {
   constructor(public rootStore: RootStore) {
     makeAutoObservable(this);
 
-    this.geoZones = [];
+    this._geoZones = [];
     this._pageOptions = {
       pageIndex: 0,
       pageSize: 12,
     } as IPageRequestOptions;
-    this.isLoading = true;
   }
 
-  geoZones: IGeoZone[];
+  private _geoZones: IGeoZone[];
+  public get geoZones() {
+    return this._geoZones;
+  }
 
-  public isLoading: boolean;
+  public set geoZones(geoZones: IGeoZone[]) {
+    this._geoZones = geoZones;
+  }
 
   private _pageOptions: IPageRequestOptions;
 
@@ -32,17 +36,10 @@ export class GeoZoneStore {
   }
 
   public async loadPage() {
-    runInAction(() => {
-      this.isLoading = true;
-    });
-
     const [status, response] = await getGeoZones(this.pageOptions);
 
-    runInAction(async () => {
-      if (status) {
-        this.geoZones = response.data.items;
-      } else console.log("failed to load geozones");
-      this.isLoading = false;
-    });
+    if (status) {
+      this.geoZones = response.data.items;
+    } else console.log("failed to load geozones");
   }
 }

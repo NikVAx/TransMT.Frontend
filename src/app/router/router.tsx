@@ -4,6 +4,7 @@ import { View } from "@adobe/react-spectrum";
 import { LoginPage, ProfilePage } from "@/pages";
 import { AuthGuard } from "@/shared/components/authGuard/authGuard";
 import { AppOutletContainer } from "@/shared/components/appOutletContainer";
+import { BuildingCreatePage } from "@/pages/entities/buildings";
 
 export const router = createBrowserRouter([
   {
@@ -18,7 +19,10 @@ export const router = createBrowserRouter([
   },
   {
     element: <AppOutletContainer />,
-    children: [{ path: "/account/profile", element: <ProfilePage /> }],
+    children: [
+      { path: "/account/profile", element: <ProfilePage /> },
+      { path: "/entities/buildings/create", element: <BuildingCreatePage /> },
+    ],
   },
   {
     path: "/login",

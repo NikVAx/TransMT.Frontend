@@ -4,3 +4,7 @@ export * from "./dataGrid";
 export * from "./authGuard";
 export * from "./actionGuard"
 export * from "./appOutletContainer"
+export * from "./pageWrapper"
+export * from "./pageHeader"
+export * from "./pageContent"
+export * from "./pageActions"

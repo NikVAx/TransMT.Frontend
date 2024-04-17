@@ -28,8 +28,16 @@ export class AuthStore {
     return this._data.user != null;
   }
 
-  public hasPermission(permission: string) {
-    return this._permissions.some((perm) => perm === permission);
+  public hasPermission(requiredPermission: string) {
+    return this._permissions.some(
+      (permission) => permission === requiredPermission
+    );
+  }
+
+  public hasEveryPermission(permissions: string[]) {
+    return permissions.every((requiredPermission) =>
+      this.hasPermission(requiredPermission)
+    );
   }
 
   public loadCachedData() {
