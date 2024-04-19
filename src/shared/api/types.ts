@@ -3,14 +3,17 @@ export interface IPageRequestOptions {
   pageSize: number;
 }
 
-export type IPaginatedRequest<T = any> = IPageRequestOptions & T;
-
-export interface IPaginatedResponse<T> {
-  items: T[];
+export interface IPageOptions {
   pageIndex: number;
   pageSize: number;
   pageCount: number;
   totalCount: number;
+}
+
+export type IPaginatedRequest<T = any> = IPageRequestOptions & T;
+
+export interface IPaginatedResponse<T> extends IPageOptions {
+  items: T[];
 }
 
 export interface IGeoPoint {

@@ -1,6 +1,6 @@
 import { useMainLayout } from "../../context/mainLayout.hooks";
 import ShowMenu from "@spectrum-icons/workflow/ShowMenu";
-import { BaseButton } from "@/shared/components";
+import { BaseButton } from "@/components";
 
 export const TriggerMenuButton = () => {
   const { setIsSidebarOpen } = useMainLayout();

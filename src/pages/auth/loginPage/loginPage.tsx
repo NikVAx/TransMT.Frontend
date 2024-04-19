@@ -1,6 +1,6 @@
 import { LoginLayout } from "@/app/layouts";
 import { useStore } from "@/app/rootStore";
-import { BaseButton } from "@/shared/components";
+import { BaseButton } from "@/components";
 import { Form, TextField, View } from "@adobe/react-spectrum";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";

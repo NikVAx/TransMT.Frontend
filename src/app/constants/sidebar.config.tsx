@@ -1,5 +1,5 @@
 import { ITreeNode, TreeNode } from "@/shared";
-import { IMenuItem } from "./sidebar.types";
+import { IMenuItem } from "../layouts/mainLayout/components/sidebar/sidebar.types";
 
 export const sidebarConfig: ITreeNode<IMenuItem>[] = [
   TreeNode({ text: "Справочники", link: "#entities" }, [
@@ -18,8 +18,8 @@ export const sidebarConfig: ITreeNode<IMenuItem>[] = [
   TreeNode({ text: "Отчеты", link: "#reports" }, [
     TreeNode({ text: "Отчет о событиях", link: "/reports/events" }),
   ]),
-  TreeNode({ text: "Учётные записи", link: "#identities" }, [
-    TreeNode({ text: "Пользователи", link: "/identities/list" }),
-    TreeNode({ text: "Роли", link: "/identities/roles" }),
+  TreeNode({ text: "Учётные записи", link: "#accounts" }, [
+    TreeNode({ text: "Пользователи", link: "/accounts/users" }),
+    TreeNode({ text: "Роли", link: "/accounts/roles" }),
   ]),
 ];

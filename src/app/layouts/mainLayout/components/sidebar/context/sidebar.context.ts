@@ -1,6 +1,6 @@
 import { ViewTree } from "@/shared";
 import { createContext } from "react";
-import { sidebarConfig } from "../sidebar.config";
+import { sidebarConfig } from "../../../../../constants/sidebar.config";
 
 export const sidebarTree = new ViewTree(sidebarConfig);
 

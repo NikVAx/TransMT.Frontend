@@ -1,6 +1,6 @@
 import { PERMISSIONS } from "@/app/constants";
 import { useStore } from "@/app/rootStore";
-import { ActionGuard, BaseButton, DataGrid, PageWrapper } from "@/shared";
+import { ActionGuard, BaseButton, DataGrid, PageWrapper } from "@/components";
 import {
   Flex,
   Item,

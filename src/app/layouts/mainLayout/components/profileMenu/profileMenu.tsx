@@ -1,5 +1,5 @@
 import { useStore } from "@/app/rootStore";
-import { BaseButton } from "@/shared/components";
+import { BaseButton } from "@/components";
 import {
   Avatar,
   Item,

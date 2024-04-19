@@ -1,4 +1,4 @@
-import { PageActions, PageContent, PageHeader, PageWrapper } from "@/shared";
+import { PageActions, PageContent, PageHeader, PageWrapper } from "@/components";
 
 export const BuildingCreatePage = () => {
   return (

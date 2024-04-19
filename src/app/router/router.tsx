@@ -1,10 +1,15 @@
 import { createBrowserRouter } from "react-router-dom";
 import { MainLayout } from "../layouts/mainLayout";
 import { View } from "@adobe/react-spectrum";
-import { LoginPage, ProfilePage } from "@/pages";
-import { AuthGuard } from "@/shared/components/authGuard/authGuard";
-import { AppOutletContainer } from "@/shared/components/appOutletContainer";
-import { BuildingCreatePage } from "@/pages/entities/buildings";
+import { AppOutletContainer, AuthGuard } from "@/components";
+import {
+  LoginPage,
+  ProfilePage,
+  RoleCreatePage,
+  RolesViewPage,
+  BuildingCreatePage,
+  RoleEditPage,
+} from "@/pages";
 
 export const router = createBrowserRouter([
   {
@@ -21,6 +26,9 @@ export const router = createBrowserRouter([
     element: <AppOutletContainer />,
     children: [
       { path: "/account/profile", element: <ProfilePage /> },
+      { path: "/accounts/roles", element: <RolesViewPage /> },
+      { path: "/accounts/roles/create", element: <RoleCreatePage /> },
+      { path: "/accounts/roles/edit", element: <RoleEditPage /> },
       { path: "/entities/buildings/create", element: <BuildingCreatePage /> },
     ],
   },
