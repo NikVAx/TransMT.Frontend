@@ -2,11 +2,11 @@ import { IPaginator } from "@/components";
 import { IPageOptions } from "@/shared";
 
 export interface IPaginationStore extends IPaginator {
+  setCount(pageCount: number, totalCount: number) : void;
   options: IPageOptions;
 }
 
 export interface IStoreWithPagination {
-  pageOptions: IPageOptions;
   fetchPage(): void;
   pagination: IPaginationStore;
 }

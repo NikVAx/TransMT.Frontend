@@ -4,4 +4,6 @@ export interface IPaginator {
   prev(): void;
   getPageCount() : number;
   getPage() : number;
+  hasNext : boolean;
+  hasPrev : boolean;
 }

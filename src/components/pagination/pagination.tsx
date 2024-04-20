@@ -15,6 +15,7 @@ export const Pagination = observer(
             onPress={() => {
               paginator.prev();
             }}
+            isDisabled={!paginator.hasPrev}
           >
             <ChevronLeft />
           </BaseButton>
@@ -24,6 +25,7 @@ export const Pagination = observer(
             onPress={() => {
               paginator.next();
             }}
+            isDisabled={!paginator.hasNext}
           >
             <ChevronRight />
           </BaseButton>

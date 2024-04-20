@@ -7,6 +7,7 @@ import {
   Heading,
 } from "@adobe/react-spectrum";
 
+
 export const SubmitDeleteDialog = ({ close, count, onSubmit }: any) => {
   const onSubmitPress = (e: any) => {
     onSubmit(e);

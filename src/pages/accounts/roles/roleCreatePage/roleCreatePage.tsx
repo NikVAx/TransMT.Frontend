@@ -1,5 +1,5 @@
 import { useStore } from "@/app/rootStore";
-import { ICreateRoleDto, IPermission, RoleStore } from "@/features";
+import { ICreateRoleDto, IPermission } from "@/features";
 import {
   BaseButton,
   DataGrid,
@@ -8,7 +8,7 @@ import {
   PageContent,
   PageHeader,
   PageWrapper,
-  defineColumns
+  defineColumns,
 } from "@/components";
 import { Form, TextArea, TextField } from "@adobe/react-spectrum";
 import { RowSelectedEvent } from "ag-grid-community";
@@ -17,7 +17,13 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const columnDefs = defineColumns<IPermission>([
-  { field: "id", headerName: "ID", checkboxSelection: true, filter: true, },
+  {
+    field: "id",
+    headerName: "ID",
+    checkboxSelection: true,
+    filter: true,
+    filterParams: { buttons: ["clear", "reset", "apply"] },
+  },
   { field: "name", headerName: "Название" },
   { field: "description", headerName: "Описание", flex: 1 },
 ]);
@@ -43,17 +49,17 @@ export const RoleCreatePage = observer(() => {
     }));
   };
 
-  const createRoleHandler = () => {
-    roleStore.createRole(role);
-  }
+  const createRoleHandler = async () => {
+    const created = await roleStore.createRole(role);
+
+    if (created !== null) {
+      navigate(`/accounts/roles/${created.id}/edit`)
+    }
+  };
 
   useEffect(() => {
     permissionStore.fetchPermissions();
   }, []);
-
-  useEffect(() => {
-
-  }, [roleStore.errors])
 
   return (
     <PageWrapper>

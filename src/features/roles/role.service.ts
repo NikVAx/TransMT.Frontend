@@ -5,7 +5,12 @@ import {
   appApiInstance,
   createGuardRequest,
 } from "@/shared";
-import { ICreateRoleDto, IEditRoleDto, IGetRoleDto } from "./role.types";
+import {
+  ICreateRoleDto,
+  IEditRoleDto,
+  IGetRoleDto,
+  IGetRoleWithShortPermissionsDto,
+} from "./role.types";
 
 const ROUTE = "roles";
 
@@ -24,13 +29,11 @@ export const deleteRoles = createGuardRequest(
     appApiInstance.delete(`/${ROUTE}`, { data })
 );
 
-
 export const getRoleById = createGuardRequest((id: string) =>
-  appApiInstance.get<IGetRoleDto>(`/${ROUTE}/${id}`)
+  appApiInstance.get<IGetRoleWithShortPermissionsDto>(`/${ROUTE}/${id}`)
 );
 
 export const editRoleById = createGuardRequest(
   (id: string, data: IEditRoleDto) =>
     appApiInstance.patch<IGetRoleDto>(`/${ROUTE}/${id}`, data)
 );
-

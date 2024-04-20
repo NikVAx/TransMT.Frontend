@@ -28,7 +28,7 @@ export const router = createBrowserRouter([
       { path: "/account/profile", element: <ProfilePage /> },
       { path: "/accounts/roles", element: <RolesViewPage /> },
       { path: "/accounts/roles/create", element: <RoleCreatePage /> },
-      { path: "/accounts/roles/edit", element: <RoleEditPage /> },
+      { path: "/accounts/roles/:id/edit", element: <RoleEditPage /> },
       { path: "/entities/buildings/create", element: <BuildingCreatePage /> },
     ],
   },

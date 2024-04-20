@@ -1,65 +1,110 @@
 import { useStore } from "@/app/rootStore";
-import { ICreateRoleDto, IPermission } from "@/features";
+import { ICreateRoleDto, IEditRoleDto, IPermission } from "@/features";
 import {
   BaseButton,
   DataGrid,
+  NavigateButton,
   PageActions,
   PageContent,
   PageHeader,
   PageWrapper,
+  defineColumns,
 } from "@/components";
-import { defineColumns } from "@/components";
 import { Form, TextArea, TextField } from "@adobe/react-spectrum";
 import { RowSelectedEvent } from "ag-grid-community";
 import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const columnDefs = defineColumns<IPermission>([
-    { field: "name", headerName: "Название", checkboxSelection: true },
-    { field: "description", headerName: "Описание", flex: 1 },
-  ]);
+  {
+    field: "id",
+    headerName: "ID",
+    checkboxSelection: true,
+    filter: true,
+    filterParams: { buttons: ["clear", "reset", "apply"] },
+  },
+  { field: "name", headerName: "Название" },
+  { field: "description", headerName: "Описание", flex: 1 },
+]);
 
 export const RoleEditPage = observer(() => {
   const navigate = useNavigate();
+  const { id } = useParams();
 
-  const [role, setRole] = useState<ICreateRoleDto>({
+  const [role, setRole] = useState<IEditRoleDto>({
     name: "",
     description: "",
     permissions: [],
   });
 
+  
+
   const { roleStore, permissionStore } = useStore((store) => ({
     roleStore: store.roleStore,
-    permissionStore: store.permissionStore
+    permissionStore: store.permissionStore,
   }));
 
-  const [selectedRows, setSelectedRows] = useState<IPermission[]>([]);
+
+
+  const onFirstDataRendered = useCallback((params: any) => {
+    console.log("onFirstDataRendered.role", role);
+    const nodesToSelect : any[] = [];
+    params.api.forEachNode((node : any) => {
+      if (node.data && role.permissions.some(id => {
+        return id === node.data.id
+      }) ) {
+        nodesToSelect.push(node);
+      }
+    });
+    params.api.setNodesSelected({ nodes: nodesToSelect, newValue: true });
+  }, [role]);
 
   const onRowSelectedHandler = (e: RowSelectedEvent<IPermission, any>) => {
-    setSelectedRows(e.api.getSelectedRows());
+    console.log("getSelectedRows",e.api.getSelectedRows());
+    console.log(role.permissions)
+    
+    setRole((prev) => ({
+      ...prev,
+      permissions: e.api.getSelectedRows().map((value) => value.name),
+    }));
+    
   };
 
-  const clearRowSelectionHandler = () => {
-    setSelectedRows([]);
-  };
+  const loadData = async () => {
+    const role = await roleStore.getRoleById(id as string);
+
+    if (role !== null) {
+      setRole({
+        name: role.name,
+        description: role.description,
+        permissions: role.permissions
+      })
+
+      permissionStore.fetchPermissions();
+    }
+  }
 
   useEffect(() => {
-    permissionStore.fetchPermissions();
+    loadData();
   }, []);
+
+  const createRoleHandler = async () => {
+    const created = await roleStore.createRole(role);
+
+    if (created !== null) {
+      navigate(`/accounts/roles/${created.id}/edit`)
+    }
+  };
 
   return (
     <PageWrapper>
       <PageHeader title="РЕДАКТИРОВАНИЕ РОЛИ" />
       <PageActions>
-        <BaseButton
-          variant="accent"
-          children="Назад к списку"
-          onPress={() => navigate("/accounts/roles")}
-        />
+        <NavigateButton title="Назад к списку" to="/accounts/roles" />
       </PageActions>
       <PageContent direction="row">
-      <Form flexBasis="50%">
+        <Form flexBasis="50%">
           <TextField
             label="Название"
             value={role?.name}
@@ -75,15 +120,15 @@ export const RoleEditPage = observer(() => {
           <BaseButton
             variant="accent"
             children="Сохранить"
-            onPress={() => console.log(role)}
+            onPress={createRoleHandler}
           />
         </Form>
         <DataGrid
           flexBasis="50%"
           columnDefs={columnDefs}
+          onFirstDataRendered={onFirstDataRendered}
           onRowSelected={onRowSelectedHandler}
-          onRowDataUpdated={clearRowSelectionHandler}
-          rowData={permissionStore.permissions}
+          rowData={permissionStore.permissions}      
         />
       </PageContent>
     </PageWrapper>

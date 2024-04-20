@@ -1,44 +1,37 @@
 import { RootStore } from "@/app/rootStore";
-import { IManyDeleteOptions, IPageOptions, toArray } from "@/shared";
+import { IManyDeleteOptions, toArray } from "@/shared";
 import { autorun, makeAutoObservable } from "mobx";
 import { ICreateRoleDto, IRole } from "./role.types";
-import { createRole, deleteRoles, getRoles } from "./role.service";
+import { createRole, deleteRoles, getRoleById, getRoles } from "./role.service";
 import {
   IPaginationStore,
   IStoreWithPagination,
   PaginationStore,
 } from "../pagination";
 
-interface IErrorMessage {
-  code: string;
-  description: string;
+
+enum STATUS {
+  WAIT, // wait any actions
+  LOADING, // executing action
+  ERROR, // complite action with error, when handled have to set wait
+  SUCCESS, // // complite action with success, when handled have to set wait
 }
 
 export class RoleStore implements IStoreWithPagination {
-  public errors: IErrorMessage[];
-  private _roles: IRole[];
-  private _pageOptions: IPageOptions;
-
   public pagination: IPaginationStore;
+
+  private _roles: IRole[];
 
   constructor(public rootStore: RootStore) {
     makeAutoObservable(this);
 
     this.pagination = new PaginationStore<RoleStore>(this);
 
-    this._roles = [];
-    this.errors = [];
-    this._pageOptions = {
-      pageIndex: 0,
-      pageSize: 16,
-      pageCount: 0,
-      totalCount: 0,
-    } as IPageOptions;
-  }
+    autorun(() => {
+      this.fetchPage();
+    });
 
-  public setPageSize(pageSize: number) {
-    this.pageOptions.pageSize = pageSize;
-    this.fetchPage();
+    this._roles = [];
   }
 
   public set roles(roles: IRole[]) {
@@ -49,36 +42,36 @@ export class RoleStore implements IStoreWithPagination {
     return this._roles;
   }
 
-  public get pageOptions() {
-    return this._pageOptions;
-  }
-
-  public set pageOptions(options: IPageOptions) {
-    this._pageOptions = options;
-  }
-
   public async fetchPage() {
-    const [status, response] = await getRoles(this.pageOptions);
+    const [status, response] = await getRoles(this.pagination.options);
 
     if (status) {
       this.roles = response.data.items.map((value) => ({
         ...value,
         permissions: [],
       }));
-      this.pageOptions = {
-        ...this.pageOptions,
-        pageCount: response.data.pageCount,
-        totalCount: response.data.totalCount,
-      };
+      this.pagination.setCount(
+        response.data.pageCount,
+        response.data.totalCount
+      );
     }
   }
 
-  public async createRole(options: ICreateRoleDto, loadPage: boolean = true) {
+  public async getRoleById(id: string) {
+    const [status, response] = await getRoleById(id);
+    if (status) {
+      return response.data;
+    } else {
+      return null;
+    }
+  }
+
+  public async createRole(options: ICreateRoleDto) {
     const [status, response] = await createRole(options);
     if (status) {
-      if (loadPage) this.fetchPage();
+      return response.data;
     } else {
-      console.log(response);
+      return null;
     }
   }
 
@@ -93,7 +86,7 @@ export class RoleStore implements IStoreWithPagination {
     if (status) {
       if (loadPage) this.fetchPage();
     } else {
-      console.log("can't delete role(s) for some reason", response);
+      console.log("NOT IMPLEMENTED ERROR HANDLER", response);
     }
   }
 }
